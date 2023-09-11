@@ -11,6 +11,9 @@ Here are some examples of use cases where the target (reference) is pure digital
  example it makes sense to have digital silence in the target for that stem.
 * Speech denoising. If you have a recording with only noise, and no speech, the target
  should be digital silence.
+* Multichannel speaker separation wth one target audio channel for each speaker. If you
+ apply the metric in a windowed way, some segments are going to have digital silence in
+ the target, because the speaker of interest is not speaking at that time.
 
 MSE is well-defined for digital silence targets, but has a bunch of other issues:
 
