@@ -40,7 +40,7 @@ Here are some examples of use cases where the target (reference) is pure digital
 * **Multichannel speaker separation** When evaluating speaker separation in a windowed
  approach, periods when a speaker isn't speaking should be evaluated against silence.
 
-MSE is well-defined for digital silence targets, but has several drawbacks:
+Mean squared error (MSE) is well-defined for digital silence targets, but has several drawbacks:
 
 * The values are commonly ridiculously small, like between 1e-8 and 1e-3, which makes number formatting and sight-reading hard
 * It's not tailored specifically for audio
@@ -50,7 +50,7 @@ MSE is well-defined for digital silence targets, but has several drawbacks:
 * It's not logarithmic, like human hearing is
 
 **logWMSE** attempts to solve all the problems mentioned above. It's essentially the **log**
-of a **frequency-weighted MSE**, with a few bells and whistles.
+of a frequency-**weighted MSE**, with a few bells and whistles.
 
 The frequency weighting is like this:
 ![frequency_weighting.png](plot/frequency_weighting.png)
