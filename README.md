@@ -1,8 +1,9 @@
 # logWMSE
 
-This audio quality metric, logWMSE, tries to fix a shortcoming of common metrics: The
-support for digital silence. Existing audio quality metrics, like VISQOL, CDPAM, SDR,
-SIR, SAR, ISR, STOI and SI-SDR are not well-behaved when the target is digital silence.
+This audio quality metric, logWMSE, tries to address a limitation of existing metrics:
+The lack of support for digital silence. Existing audio quality metrics, like VISQOL,
+CDPAM, SDR, SIR, SAR, ISR, STOI and SI-SDR are not well-behaved when the target is
+digital silence.
 
 # Installation
 
@@ -25,38 +26,36 @@ target_sound = np.zeros((sample_rate,), dtype=np.float32)
 target_sound_copy = np.copy(target_sound)
 
 log_wmse = calculate_log_wmse(input_sound, est_sound, target_sound, sample_rate)
-print(log_wmse)  # 18.42
+print(log_wmse)  # Expected output: ~18.42
 ```
 
 # Motivation and more info
 
 Here are some examples of use cases where the target (reference) is pure digital silence:
 
-* Music source separation with many stems, e.g. "vocal", "drums", "bass" and "other".
- Let's say you have a singer-songwriter song without bass in your test set. For that
- example it makes sense to have digital silence in the target for that stem.
-* Speech denoising. If you have a recording with only noise, and no speech, the target
+* **Music source separation:** Imagine separating music into stems like "vocal", "drums",
+ "bass", and "other". A song without bass would naturally have a silent target for the "bass" stem.
+* **Speech denoising:** If you have a recording with only noise, and no speech, the target
  should be digital silence.
-* Multichannel speaker separation wth one target audio channel for each speaker. If you
- apply the metric in a windowed way, some segments are going to have digital silence in
- the target, because the speaker of interest is not speaking at that time.
+* **Multichannel speaker separation** When evaluating speaker separation in a windowed
+ approach, periods when a speaker isn't speaking should be evaluated against silence.
 
-MSE is well-defined for digital silence targets, but has a bunch of other issues:
+MSE is well-defined for digital silence targets, but has several drawbacks:
 
 * The values are commonly ridiculously small, like between 1e-8 and 1e-3, which makes number formatting and sight-reading hard
-* It's not tailored for audio
-* It's not scale-invariant
-* It doesn't align with frequency sensitivity of human hearing
-* It's not invariant to tiny errors that don't matter because humans can't hear those errors anyway
+* It's not tailored specifically for audio
+* Lack of scale-invariance
+* Doesn't consider the frequency sensitivity of human hearing
+* It's not invariant to tiny errors that don't matter (because humans can't hear those errors anyway)
 * It's not logarithmic, like human hearing is
 
-So this custom metric attempts to solve all the problems mentioned above.
-It's essentially the **log** of a **frequency-weighted MSE**, with a few bells and whistles.
+**logWMSE** attempts to solve all the problems mentioned above. It's essentially the **log**
+of a **frequency-weighted MSE**, with a few bells and whistles.
 
 The frequency weighting is like this:
 ![frequency_weighting.png](plot/frequency_weighting.png)
 
-This audio quality metric is made for high frequencies, like 36000, 44100 and 48000 Hz.
+This audio quality metric is optimized for high frequencies, like 36000, 44100 and 48000 Hz.
 
 Unlike many audio quality metrics, logWMSE accepts a *triple* of audio inputs:
 
@@ -70,13 +69,7 @@ well input audio was attenuated to the given target when the target is digital s
 (all zeros). And it needs to do this in a "scale-invariant" way. In other words, the
 metric score should be the same if you gain the audio triplet by an arbitrary amount.
 
-Note that this metric is not invariant to:
+However, note the following:
 
-* Arbitrary scaling (gain) in the estimated audio (compared to the target audio)
-* Opposite polarity in the estimated audio (compared to the target audio)
-* An offset/delay in the estimated audio (compared to the target audio)
-
-And although this metric implements frequency filtering, which is motivated by human
-hearing sensitivity to different frequencies, it does not come with a complete
-psychoacoustic models for perceptual audio. For example, it has no concept of auditory
-masking.
+* The metric isn't invariant to arbitrary scaling, polarity inversion, or offsets in the estimated audio *relative to the target*.
+* Although it incorporates frequency filtering inspired by human auditory sensitivity, it doesn't fully model human auditory perception. For instance, it doesn't consider auditory masking.
