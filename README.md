@@ -55,7 +55,7 @@ of a frequency-**weighted MSE**, with a few bells and whistles.
 The frequency weighting is like this:
 ![frequency_weighting.png](plot/frequency_weighting.png)
 
-This audio quality metric is optimized for high frequencies, like 36000, 44100 and 48000 Hz.
+This audio quality metric is optimized for high sample rates, like 36000, 44100 and 48000 Hz.
 
 Unlike many audio quality metrics, logWMSE accepts a *triple* of audio inputs:
 
