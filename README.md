@@ -1,8 +1,34 @@
 # logWMSE
 
-This audio quality metric, logWMSE, tries to fix an shortcoming of common metrics: The
+This audio quality metric, logWMSE, tries to fix a shortcoming of common metrics: The
 support for digital silence. Existing audio quality metrics, like VISQOL, CDPAM, SDR,
 SIR, SAR, ISR, STOI and SI-SDR are not well-behaved when the target is digital silence.
+
+# Installation
+
+`pip install git+https://github.com/nomonosound/log-wmse-audio-quality`
+
+# Usage example
+
+```python
+import numpy as np
+from log_wmse_audio_quality import calculate_log_wmse
+
+sample_rate = 44100
+input_sound = np.random.uniform(low=-1.0, high=1.0, size=(sample_rate,)).astype(
+    np.float32
+)
+input_sound_copy = np.copy(input_sound)
+est_sound = input_sound * 0.1
+est_sound_copy = np.copy(est_sound)
+target_sound = np.zeros((sample_rate,), dtype=np.float32)
+target_sound_copy = np.copy(target_sound)
+
+log_wmse = calculate_log_wmse(input_sound, est_sound, target_sound, sample_rate)
+print(log_wmse)  # 18.42
+```
+
+# Motivation and more info
 
 Here are some examples of use cases where the target (reference) is pure digital silence:
 
@@ -50,26 +76,7 @@ Note that this metric is not invariant to:
 * Opposite polarity in the estimated audio (compared to the target audio)
 * An offset/delay in the estimated audio (compared to the target audio)
 
-# Installation
-
-`pip install git+https://github.com/nomonosound/log-wmse-audio-quality`
-
-# Usage example
-
-```python
-import numpy as np
-from log_wmse_audio_quality import calculate_log_wmse
-
-sample_rate = 44100
-input_sound = np.random.uniform(low=-1.0, high=1.0, size=(sample_rate,)).astype(
-    np.float32
-)
-input_sound_copy = np.copy(input_sound)
-est_sound = input_sound * 0.1
-est_sound_copy = np.copy(est_sound)
-target_sound = np.zeros((sample_rate,), dtype=np.float32)
-target_sound_copy = np.copy(target_sound)
-
-log_wmse = calculate_log_wmse(input_sound, est_sound, target_sound, sample_rate)
-print(log_wmse)  # 18.42
-```
+And although this metric implements frequency filtering, which is motivated by human
+hearing sensitivity to different frequencies, it does not come with a complete
+psychoacoustic models for perceptual audio. For example, it has no concept of auditory
+masking.
