@@ -61,15 +61,15 @@ if __name__ == "__main__":
     loudness_differences2 = get_frequency_response(filters2, frequencies, sample_rate)
 
     # Plot
-    plt.figure()
+    plt.figure(figsize=(9, 4))
     plt.semilogx(frequencies, loudness_differences, label="audiomentations filter")
-    plt.semilogx(frequencies, loudness_differences2, label="zero phase alternative")
+    #plt.semilogx(frequencies, loudness_differences2, label="zero phase alternative")
     plt.title("Frequency response")
     plt.xlabel("Frequency (Hz)")
-    plt.ylabel("RMS difference (dB)")
+    plt.ylabel("dB")
     xticks = [25, 50, 100, 200, 400, 800, 1500, 3000, 6000, 10000, 20000]
     xlabels = [25, 50, 100, 200, 400, 800, 1500, "3k", "6k", "10k", "20k"]
     plt.xticks(xticks, xlabels)
     plt.grid()
-    plt.legend()
+    #plt.legend()
     plt.show()
