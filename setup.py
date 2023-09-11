@@ -32,7 +32,6 @@ setup(
         " Useful for evaluating audio source separation systems, even when there are"
         " many audio tracks or stems."
     ),
-    license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/nomonosound/log-wmse-audio-quality",
@@ -51,7 +50,6 @@ setup(
     python_requires=">=3.8",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
