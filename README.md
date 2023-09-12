@@ -78,6 +78,10 @@ to 0 dB RMS.
 logWMSE is scaled to the same order of magnitude as common SDR values. For example,
 logWMSE=3 means poor quality, while logWMSE=30 means very good quality.
 
+`calculate_log_wmse` accepts 1D or 2D numpy arrays as input. In the latter case,
+the shape is expected to be `(channels, samples)`. The dtype of the numpy arrays is
+expected to be float32.
+
 Please note the following limitations:
 
 * The metric isn't invariant to arbitrary scaling, polarity inversion, or offsets in the estimated audio *relative to the target*.
