@@ -16,14 +16,9 @@ import numpy as np
 from log_wmse_audio_quality import calculate_log_wmse
 
 sample_rate = 44100
-input_sound = np.random.uniform(low=-1.0, high=1.0, size=(sample_rate,)).astype(
-    np.float32
-)
-input_sound_copy = np.copy(input_sound)
+input_sound = np.random.uniform(low=-1.0, high=1.0, size=(sample_rate,)).astype(np.float32)
 est_sound = input_sound * 0.1
-est_sound_copy = np.copy(est_sound)
 target_sound = np.zeros((sample_rate,), dtype=np.float32)
-target_sound_copy = np.copy(target_sound)
 
 log_wmse = calculate_log_wmse(input_sound, est_sound, target_sound, sample_rate)
 print(log_wmse)  # Expected output: ~18.42
@@ -69,7 +64,9 @@ well input audio was attenuated to the given target when the target is digital s
 (all zeros). And it needs to do this in a "scale-invariant" way. In other words, the
 metric score should be the same if you gain the audio triplet by an arbitrary amount.
 
-However, note the following:
+logWMSE is scaled to the same order of magnitude as common SDR values. For example, logWMSE=3 means poor quality, while logWMSE=30 means very good quality.
+
+Please note the following limitations:
 
 * The metric isn't invariant to arbitrary scaling, polarity inversion, or offsets in the estimated audio *relative to the target*.
 * Although it incorporates frequency filtering inspired by human auditory sensitivity, it doesn't fully model human auditory perception. For instance, it doesn't consider auditory masking.
