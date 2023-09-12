@@ -50,7 +50,10 @@ of a frequency-**weighted MSE**, with a few bells and whistles.
 The frequency weighting is like this:
 ![frequency_weighting.png](plot/frequency_weighting.png)
 
-This audio quality metric is optimized for high sample rates, like 36000, 44100 and 48000 Hz.
+This audio quality metric was made with **high sample rates** in mind, like 36000, 44100
+and 48000 Hz. However, in theory it should also work for low sample rates, like 16000 Hz.
+The metric function performs an internal resampling to 44100 Hz to make the frequency
+weighting filter consistent across multiple input sample rates.
 
 Unlike many audio quality metrics, logWMSE accepts a *triple* of audio inputs:
 
@@ -61,10 +64,19 @@ Unlike many audio quality metrics, logWMSE accepts a *triple* of audio inputs:
 Relative audio quality metrics usually only input the two latter. However, logWMSE
 additionally needs the unprocessed audio, because it needs to be able to measure how
 well input audio was attenuated to the given target when the target is digital silence
-(all zeros). And it needs to do this in a "scale-invariant" way. In other words, the
-metric score should be the same if you gain the audio triplet by an arbitrary amount.
+(all zeros). And it needs to do this in a "scale-invariant" way. The scale invariance in
+logWMSE is not exactly like SI-SDR, where the processed audio can have arbitrary scaling
+compared to the target and still get the same score. logWMSE requires the gain of the
+target to be consistent with the gain of the unprocessed sound. And the processed sound
+needs to be scaled similarly to the target for a good metric score. The scale invariance
+in logWMSE can be explained like this: if all three sounds are gained by an arbitrary
+amount (the same gain for all three), the metric score will stay the same. Internally,
+that property is implemented like this: the processed audio and the target audio are
+both gained by the factor that would be required to bring the filtered unprocessed audio
+to 0 dB RMS.
 
-logWMSE is scaled to the same order of magnitude as common SDR values. For example, logWMSE=3 means poor quality, while logWMSE=30 means very good quality.
+logWMSE is scaled to the same order of magnitude as common SDR values. For example,
+logWMSE=3 means poor quality, while logWMSE=30 means very good quality.
 
 Please note the following limitations:
 
