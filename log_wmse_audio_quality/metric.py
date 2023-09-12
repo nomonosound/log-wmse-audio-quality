@@ -11,7 +11,7 @@ from log_wmse_audio_quality.constants import (
     INTERNAL_SAMPLE_RATE,
 )
 from log_wmse_audio_quality.freq_weighting_filter import (
-    ZeroPhaseFilter,
+    ZeroPhaseEquivalentFilter,
     get_human_hearing_sensitivity_filter_set,
 )
 from log_wmse_audio_quality.utils import calculate_rms
@@ -98,7 +98,7 @@ def calculate_log_wmse(
         ).T
 
     # Get filter set for human hearing sensitivity
-    filters = ZeroPhaseFilter(
+    filters = ZeroPhaseEquivalentFilter(
         get_human_hearing_sensitivity_filter_set(), INTERNAL_SAMPLE_RATE
     )
 

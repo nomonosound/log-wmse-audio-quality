@@ -6,7 +6,7 @@ from numpy.typing import NDArray
 
 from log_wmse_audio_quality import calculate_log_wmse
 from log_wmse_audio_quality.freq_weighting_filter import (
-    ZeroPhaseFilter,
+    ZeroPhaseEquivalentFilter,
     get_human_hearing_sensitivity_filter_set,
 )
 from plot.plot_filter_phase_shift import get_phase_shifts_deg
@@ -178,7 +178,7 @@ class TestMetrics:
     def test_frequency_weighting_filter_response(self):
         np.random.seed(42)
         sample_rate = 44100
-        filters = ZeroPhaseFilter(
+        filters = ZeroPhaseEquivalentFilter(
             get_human_hearing_sensitivity_filter_set(), sample_rate
         )
 
@@ -200,7 +200,7 @@ class TestMetrics:
     def test_frequency_weighting_filter_zero_phase(self):
         np.random.seed(42)
         sample_rate = 44100
-        filters = ZeroPhaseFilter(
+        filters = ZeroPhaseEquivalentFilter(
             get_human_hearing_sensitivity_filter_set(), sample_rate
         )
         frequencies = np.linspace(20, 18000, 400)

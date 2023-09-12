@@ -69,7 +69,7 @@ def get_human_hearing_sensitivity_filter_set() -> (
     )
 
 
-class ZeroPhaseFilter:
+class ZeroPhaseEquivalentFilter:
     def __init__(self, filter_func: Callable, sample_rate: int, n_fft: int = 2 * 4096):
         """Extract the target response from the given filter_func (which may be not
         zero-phase). The idea is to construct a zero-phase variant of the given
