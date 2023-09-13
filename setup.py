@@ -38,7 +38,7 @@ setup(
     packages=find_packages(exclude=["plot", "tests"]),
     install_requires=[
         "audiomentations>=0.31.0,<=0.33",
-        "fast-align-audio==0.2.0",
+        "fast-align-audio>=0.2.0,<0.3.0",
         "librosa>=0.9.1,<=0.10.2",
         "matplotlib>=3,<4",
         "numpy>=1.21,<2",
