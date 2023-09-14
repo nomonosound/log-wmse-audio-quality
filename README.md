@@ -76,7 +76,8 @@ both gained by the factor that would be required to bring the filtered unprocess
 to 0 dB RMS.
 
 logWMSE is scaled to the same order of magnitude as common SDR values. For example,
-logWMSE=3 means poor quality, while logWMSE=30 means very good quality.
+logWMSE=3 means poor quality, while logWMSE=30 means very good quality. In other words,
+higher is better.
 
 `calculate_log_wmse` accepts 1D or 2D numpy arrays as input. In the latter case,
 the shape is expected to be `(channels, samples)`. The dtype of the numpy arrays is
