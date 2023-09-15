@@ -6,11 +6,12 @@ from numpy.typing import NDArray
 
 from log_wmse_audio_quality import calculate_log_wmse
 from log_wmse_audio_quality.freq_weighting_filter import (
-    ZeroPhaseEquivalentFilter,
     get_human_hearing_sensitivity_filter_set,
+    Convolver,
+    get_zero_phase_equivalent_filter_impulse_response,
 )
-from plot.plot_filter_phase_shift import get_phase_shifts_deg
-from plot.plot_frequency_response import get_frequency_response
+from dev.plot_filter_phase_shift import get_phase_shifts_deg
+from dev.plot_frequency_response import get_frequency_response
 
 
 def generate_sine_wave(frequency: float, length: int, sample_rate: int) -> NDArray:
@@ -178,8 +179,10 @@ class TestMetrics:
     def test_frequency_weighting_filter_response(self):
         np.random.seed(42)
         sample_rate = 44100
-        filters = ZeroPhaseEquivalentFilter(
-            get_human_hearing_sensitivity_filter_set(), sample_rate
+        filters = Convolver(
+            get_zero_phase_equivalent_filter_impulse_response(
+                get_human_hearing_sensitivity_filter_set(), sample_rate
+            )
         )
 
         frequencies = np.linspace(20, 20000, 2000)
@@ -200,8 +203,10 @@ class TestMetrics:
     def test_frequency_weighting_filter_zero_phase(self):
         np.random.seed(42)
         sample_rate = 44100
-        filters = ZeroPhaseEquivalentFilter(
-            get_human_hearing_sensitivity_filter_set(), sample_rate
+        filters = Convolver(
+            get_zero_phase_equivalent_filter_impulse_response(
+                get_human_hearing_sensitivity_filter_set(), sample_rate
+            )
         )
         frequencies = np.linspace(20, 18000, 400)
         phase_shifts_deg = get_phase_shifts_deg(filters, frequencies)

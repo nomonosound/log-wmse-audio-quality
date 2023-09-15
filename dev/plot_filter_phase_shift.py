@@ -7,8 +7,9 @@ import numpy as np
 from tqdm import tqdm
 
 from log_wmse_audio_quality.freq_weighting_filter import (
-    ZeroPhaseEquivalentFilter,
     get_human_hearing_sensitivity_filter_set,
+    Convolver,
+    get_zero_phase_equivalent_filter_impulse_response,
 )
 
 
@@ -54,7 +55,11 @@ if __name__ == "__main__":
     sample_rate = 44100
     filters = get_human_hearing_sensitivity_filter_set()
     filters_simple_callable = lambda x: filters(x, sample_rate)
-    linear_phase_filter = ZeroPhaseEquivalentFilter(filters, sample_rate)
+    linear_phase_filter = Convolver(
+        get_zero_phase_equivalent_filter_impulse_response(
+            filters, sample_rate=sample_rate
+        )
+    )
 
     # Frequencies to analyze
     frequencies = np.linspace(20, 18000, 600)

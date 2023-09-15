@@ -14,15 +14,6 @@ from numpy.typing import NDArray
 from log_wmse_audio_quality.constants import N_FFT
 
 
-def calculate_impulse_response(filter_arr: NDArray, n_fft=N_FFT) -> NDArray:
-    # Compute impulse response
-    impulse_response = np.fft.fftshift(np.fft.irfft(filter_arr, n_fft))
-
-    # Make it symmetric
-    center_sample = len(impulse_response) // 2 + 1
-    return impulse_response[center_sample - 2000 : center_sample + 2000]
-
-
 def get_human_hearing_sensitivity_filter_set() -> (
     Callable[[NDArray[np.float32], int], NDArray[np.float32]]
 ):
@@ -69,29 +60,37 @@ def get_human_hearing_sensitivity_filter_set() -> (
     )
 
 
-class ZeroPhaseEquivalentFilter:
-    def __init__(self, filter_func: Callable, sample_rate: int, n_fft: int = 2 * 4096):
-        """Extract the target response from the given filter_func (which may be not
-        zero-phase). The idea is to construct a zero-phase variant of the given
-        filter_func."""
-        self.sample_rate = sample_rate
+def get_zero_phase_equivalent_filter_impulse_response(
+    filter_func: Callable[[NDArray[np.float32], int], NDArray[np.float32]],
+    sample_rate: int,
+    n_fft: int = 2 * N_FFT,
+) -> NDArray:
+    """Extract the target response from the given filter_func (which may be not
+    zero-phase). The idea is to construct a zero-phase equivalent of the given
+    filter_func. Credits: mmxgn"""
+    # Get the impulse response of the filter
+    delta = np.zeros(n_fft, dtype=np.float32)
+    delta[len(delta) // 2] = 1.0
+    impulse_response = filter_func(delta, sample_rate)
 
-        # Get the impulse response of the filter
-        delta = np.zeros(n_fft, dtype=np.float32)
-        delta[len(delta) // 2] = 1.0
-        impulse_response = filter_func(delta, sample_rate)
+    w, h = scipy.signal.freqz(impulse_response, worN=n_fft // 2 + 1)
+    linear_target_response = np.abs(h)
 
-        w, h = scipy.signal.freqz(impulse_response, worN=n_fft // 2 + 1)
-        n_fft = n_fft
-        linear_target_response = np.abs(h)
-        self.impulse_response = calculate_impulse_response(
-            linear_target_response, n_fft
-        )
+    # Compute impulse response
+    impulse_response = np.fft.fftshift(np.fft.irfft(linear_target_response, n_fft))
+
+    # Make it symmetric
+    center_sample = len(impulse_response) // 2 + 1
+    return impulse_response[center_sample - 2000 : center_sample + 2000]
+
+
+class Convolver:
+    def __init__(self, impulse_response: NDArray):
+        self.impulse_response = impulse_response
 
     def __call__(self, audio: NDArray[np.float32]):
-        """Apply the zero-phase filter to the given audio. The sample rate of the audio
-        should be the same as the sample_rate given when this class instance was
-        initialized."""
+        """Apply the filter to the given audio. The sample rate of the audio
+        should be the same as the impulse response."""
         if audio.ndim == 2:
             placeholder = np.zeros(shape=audio.shape, dtype=np.float32)
             for chn_idx in range(audio.shape[0]):

@@ -7,7 +7,8 @@ from tqdm import tqdm
 
 from log_wmse_audio_quality.freq_weighting_filter import (
     get_human_hearing_sensitivity_filter_set,
-    ZeroPhaseEquivalentFilter,
+    Convolver,
+    get_zero_phase_equivalent_filter_impulse_response,
 )
 
 
@@ -50,7 +51,11 @@ if __name__ == "__main__":
 
     filters = get_human_hearing_sensitivity_filter_set()
     filters_simple_callable = lambda x: filters(x, sample_rate)
-    filters2 = ZeroPhaseEquivalentFilter(filters, sample_rate)
+    filters2 = Convolver(
+        get_zero_phase_equivalent_filter_impulse_response(
+            filters, sample_rate=sample_rate
+        )
+    )
 
     # Frequencies to analyze
     frequencies = np.linspace(20, 20000, 400)
@@ -63,7 +68,7 @@ if __name__ == "__main__":
     # Plot
     plt.figure(figsize=(9, 4))
     plt.semilogx(frequencies, loudness_differences, label="audiomentations filter")
-    #plt.semilogx(frequencies, loudness_differences2, label="zero phase alternative")
+    # plt.semilogx(frequencies, loudness_differences2, label="zero phase alternative")
     plt.title("Frequency response")
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("dB")
@@ -71,5 +76,5 @@ if __name__ == "__main__":
     xlabels = [25, 50, 100, 200, 400, 800, 1500, "3k", "6k", "10k", "20k"]
     plt.xticks(xticks, xlabels)
     plt.grid()
-    #plt.legend()
+    # plt.legend()
     plt.show()
