@@ -4,11 +4,11 @@ import soxr
 from numpy.testing import assert_array_equal
 from numpy.typing import NDArray
 
+from dev.create_freq_weighting_filter_ir import get_zero_phase_equivalent_filter_impulse_response, \
+    get_human_hearing_sensitivity_filter_set
 from log_wmse_audio_quality import calculate_log_wmse
 from log_wmse_audio_quality.freq_weighting_filter import (
-    get_human_hearing_sensitivity_filter_set,
-    Convolver,
-    get_zero_phase_equivalent_filter_impulse_response,
+    HumanHearingSensitivityFilter
 )
 from dev.plot_filter_phase_shift import get_phase_shifts_deg
 from dev.plot_frequency_response import get_frequency_response
@@ -179,7 +179,7 @@ class TestMetrics:
     def test_frequency_weighting_filter_response(self):
         np.random.seed(42)
         sample_rate = 44100
-        filters = Convolver(
+        filters = HumanHearingSensitivityFilter(
             get_zero_phase_equivalent_filter_impulse_response(
                 get_human_hearing_sensitivity_filter_set(), sample_rate
             )
@@ -203,7 +203,7 @@ class TestMetrics:
     def test_frequency_weighting_filter_zero_phase(self):
         np.random.seed(42)
         sample_rate = 44100
-        filters = Convolver(
+        filters = HumanHearingSensitivityFilter(
             get_zero_phase_equivalent_filter_impulse_response(
                 get_human_hearing_sensitivity_filter_set(), sample_rate
             )

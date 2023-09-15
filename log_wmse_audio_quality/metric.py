@@ -10,10 +10,7 @@ from log_wmse_audio_quality.constants import (
     EPS,
     INTERNAL_SAMPLE_RATE,
 )
-from log_wmse_audio_quality.freq_weighting_filter import (
-    get_human_hearing_sensitivity_filter_set, Convolver,
-    get_zero_phase_equivalent_filter_impulse_response,
-)
+from log_wmse_audio_quality.freq_weighting_filter import HumanHearingSensitivityFilter
 from log_wmse_audio_quality.utils import calculate_rms
 
 
@@ -97,12 +94,8 @@ def calculate_log_wmse(
             quality="HQ",
         ).T
 
-    # Get filter set for human hearing sensitivity
-    filters = Convolver(
-        get_zero_phase_equivalent_filter_impulse_response(
-            get_human_hearing_sensitivity_filter_set(), sample_rate=INTERNAL_SAMPLE_RATE
-        )
-    )
+    # Get filter for human hearing sensitivity
+    filters = HumanHearingSensitivityFilter()
 
     input_rms = calculate_rms(filters(unprocessed_audio))
 

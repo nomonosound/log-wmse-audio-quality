@@ -5,10 +5,12 @@ import numpy as np
 from numpy.typing import NDArray
 from tqdm import tqdm
 
-from log_wmse_audio_quality.freq_weighting_filter import (
+from dev.create_freq_weighting_filter_ir import (
     get_human_hearing_sensitivity_filter_set,
-    Convolver,
     get_zero_phase_equivalent_filter_impulse_response,
+)
+from log_wmse_audio_quality.freq_weighting_filter import (
+    HumanHearingSensitivityFilter,
 )
 
 
@@ -51,7 +53,7 @@ if __name__ == "__main__":
 
     filters = get_human_hearing_sensitivity_filter_set()
     filters_simple_callable = lambda x: filters(x, sample_rate)
-    filters2 = Convolver(
+    filters2 = HumanHearingSensitivityFilter(
         get_zero_phase_equivalent_filter_impulse_response(
             filters, sample_rate=sample_rate
         )

@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 
-from log_wmse_audio_quality.freq_weighting_filter import (
+from dev.create_freq_weighting_filter_ir import (
     get_human_hearing_sensitivity_filter_set,
     get_zero_phase_equivalent_filter_impulse_response,
-    Convolver,
+)
+from log_wmse_audio_quality.freq_weighting_filter import (
+    HumanHearingSensitivityFilter,
 )
 
 if __name__ == "__main__":
@@ -13,7 +15,7 @@ if __name__ == "__main__":
 
     sample_rate = 44100
     filters = get_human_hearing_sensitivity_filter_set()
-    linear_phase_filter = Convolver(
+    linear_phase_filter = HumanHearingSensitivityFilter(
         get_zero_phase_equivalent_filter_impulse_response(
             filters, sample_rate=sample_rate
         )
