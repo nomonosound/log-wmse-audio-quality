@@ -55,7 +55,7 @@ Mean squared error (MSE) is well-defined for digital silence targets, but has se
 of a frequency-**weighted MSE**, with a few bells and whistles.
 
 The frequency weighting is like this:
-![frequency_weighting.png](dev/frequency_weighting.png)
+![frequency_weighting.png](https://github.com/nomonosound/log-wmse-audio-quality/raw/master/dev/frequency_weighting.png)
 
 The idea of weighting it by frequency is to make it pay less attention to frequencies
 that human hearing is less sensitive to. For example, an error at 3000 Hz sounds worse
