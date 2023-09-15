@@ -50,6 +50,10 @@ of a frequency-**weighted MSE**, with a few bells and whistles.
 The frequency weighting is like this:
 ![frequency_weighting.png](dev/frequency_weighting.png)
 
+The idea of weighting it by frequency is to make it pay less attention to frequencies
+that human hearing is less sensitive to. For example, an error at 3000 Hz sounds worse
+than an error (with the same amplitude) at 50 Hz.
+
 This audio quality metric was made with **high sample rates** in mind, like 36000, 44100
 and 48000 Hz. However, in theory it should also work for low sample rates, like 16000 Hz.
 The metric function performs an internal resampling to 44100 Hz to make the frequency
