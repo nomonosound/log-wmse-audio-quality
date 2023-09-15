@@ -1,5 +1,8 @@
 # logWMSE
 
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
+[![Licence: MIT](https://img.shields.io/pypi/l/log-wmse-audio-quality)](https://github.com/nomonosound/log-wmse-audio-quality/blob/main/LICENSE)
+
 This audio quality metric, logWMSE, tries to address a limitation of existing metrics:
 The lack of support for digital silence. Existing audio quality metrics, like VISQOL,
 CDPAM, SDR, SIR, SAR, ISR, STOI and SI-SDR are not well-behaved when the target is
@@ -7,7 +10,11 @@ digital silence. Some also struggle when the reference audio gets perfectly reco
 
 # Installation
 
-`pip install git+https://github.com/nomonosound/log-wmse-audio-quality`
+![Python version support](https://img.shields.io/pypi/pyversions/log-wmse-audio-quality)
+[![PyPI version](https://img.shields.io/pypi/v/log-wmse-audio-quality.svg?style=flat)](https://pypi.org/project/log-wmse-audio-quality/)
+[![Number of downloads from PyPI per month](https://img.shields.io/pypi/dm/log-wmse-audio-quality.svg?style=flat)](https://pypi.org/project/log-wmse-audio-quality/)
+
+`pip install log-wmse-audio-quality`
 
 # Usage example
 
