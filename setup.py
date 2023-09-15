@@ -36,6 +36,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/nomonosound/log-wmse-audio-quality",
     packages=find_packages(exclude=["dev", "tests"]),
+    package_data={"log_wmse_audio_quality": ["filter_ir.pkl"]},
     install_requires=[
         "numpy>=1.21,<2",
         "soxr>=0.3.2,<1",
