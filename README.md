@@ -3,7 +3,7 @@
 This audio quality metric, logWMSE, tries to address a limitation of existing metrics:
 The lack of support for digital silence. Existing audio quality metrics, like VISQOL,
 CDPAM, SDR, SIR, SAR, ISR, STOI and SI-SDR are not well-behaved when the target is
-digital silence.
+digital silence. Some also struggle when the reference audio gets perfectly reconstructed.
 
 # Installation
 
