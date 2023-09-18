@@ -39,8 +39,8 @@ Here are some examples of use cases where the target (reference) is pure digital
  "bass", and "other". A song without bass would naturally have a silent target for the "bass" stem.
 * **Speech denoising:** If you have a recording with only noise, and no speech, the target
  should be digital silence.
-* **Multichannel speaker separation** When evaluating speaker separation in a windowed
- approach, periods when a speaker isn't speaking should be evaluated against silence.
+* **Speaker separation:** When evaluating speaker separation in a windowed approach,
+ periods when a speaker isn't speaking should be evaluated against silence.
 
 Mean squared error (MSE) is well-defined for digital silence targets, but has several drawbacks:
 
