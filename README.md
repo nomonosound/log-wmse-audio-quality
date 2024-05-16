@@ -31,6 +31,8 @@ log_wmse = calculate_log_wmse(input_sound, est_sound, target_sound, sample_rate)
 print(log_wmse)  # Expected output: ~18.42
 ```
 
+If you need a pytorch implementation of logWMSE, see [crlandsc/torch-log-wmse-audio-quality](https://github.com/crlandsc/torch-log-wmse-audio-quality)
+
 # Motivation and more info
 
 Here are some examples of use cases where the target (reference) is pure digital silence:
