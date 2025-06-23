@@ -39,11 +39,11 @@ setup(
     package_data={"log_wmse_audio_quality": ["filter_ir.pkl"]},
     license="Apache 2.0",
     install_requires=[
-        "numpy>=1.21,<2",
+        "numpy>=1.22,<3",
         "soxr>=0.3.2,<1",
         "scipy>=1.3,<2",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
