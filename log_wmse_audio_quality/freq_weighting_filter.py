@@ -15,7 +15,7 @@ class HumanHearingSensitivityFilter:
         else:
             self.impulse_response = impulse_response
 
-    def __call__(self, audio: NDArray[np.float32]):
+    def __call__(self, audio: NDArray[np.float32]) -> NDArray[np.float32]:
         """Apply the filter to the given audio. The sample rate of the audio
         should be the same as the impulse response."""
         if audio.ndim == 2:
